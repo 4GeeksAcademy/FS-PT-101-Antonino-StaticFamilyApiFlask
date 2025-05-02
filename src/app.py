@@ -37,7 +37,45 @@ def handle_hello():
                      "family": members}
     return jsonify(response_body), 200
 
+@app.route('/members/<int:id>', methods=['DELETE'])
+def handle_delete(id):
+    result = jackson_family.delete_member(id)
+    if result:
+        return jsonify({"message": f"Miembro con id {id} eliminado"}), 200
+    else:
+        return jsonify({"error": "Miembro no encontrado"}), 404
 
+@app.route('/members/<int:id>', methods=['GET'])
+def handle_get(id):
+    result = jackson_family.get_member(id)
+    if result:
+        return jsonify({"message": f"Miembro con id {id} : {result}"}), 200
+    else:
+        return jsonify({"error": "Miembro no encontrado"}), 404
+    
+@app.route('/members/<int:id>', methods=['PUT'])
+def handle_put(id):
+    data = request.json  # Extraer datos del cuerpo de la solicitud
+    name = data.get("first_name")
+    age = data.get("age")
+    numbers = data.get("lucky_numbers")
+
+    result = jackson_family.edit_member(id, name, age, numbers)
+    
+    if result:
+        return jsonify({"message": f"Miembro con id {id} actualizado"}), 200
+    else:
+        return jsonify({"error": "Miembro no encontrado"}), 404
+
+
+
+@app.route('/members', methods=['POST'])
+def new_member():
+    data = request.json
+    new = jackson_family.add_member(data)
+    response_body = {"success": True,
+                     "family": new}
+    return jsonify(response_body), 200
 
 # This only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
