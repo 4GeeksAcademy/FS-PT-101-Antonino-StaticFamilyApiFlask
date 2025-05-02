@@ -32,11 +32,12 @@ class FamilyStructure:
         return member
 
     def delete_member(self, id):
-        for i, member in enumerate(self._members):
+        for member in self._members:
             if member["id"] == id:
-                del self._members[i]
-                return True
-        return False
+                self._members.remove(member)  # Eliminamos el miembro directamente
+                return True  # Terminamos la función al encontrar el elemento
+        return False  # Si no encontramos el elemento, devolvemos False
+
 
     def get_member(self, id):
         for member in self._members:
@@ -55,8 +56,6 @@ class FamilyStructure:
                     member["lucky_numbers"] = numbers
                 return True
         return False
-
-        
 
     # This method is done, it returns a list with all the family members
     def get_all_members(self):

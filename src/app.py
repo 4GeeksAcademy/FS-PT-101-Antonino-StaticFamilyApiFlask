@@ -16,12 +16,10 @@ CORS(app)
 # Create the jackson family object
 jackson_family = FamilyStructure("Jackson")
 
-
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
-
 
 # Generate sitemap with all your endpoints
 @app.route('/')
@@ -66,8 +64,6 @@ def handle_put(id):
         return jsonify({"message": f"Miembro con id {id} actualizado"}), 200
     else:
         return jsonify({"error": "Miembro no encontrado"}), 404
-
-
 
 @app.route('/members', methods=['POST'])
 def new_member():
